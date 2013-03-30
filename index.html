@@ -1,11 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
         <title>Guglielmo Fachini</title>
-    </head>
+        <script type="text/javascript" src="d3.min.js"></script>
+        <style media="screen" type="text/css">
+            body {
+                background-color: #0ad;
+            }
 
+            .node { 
+                opacity: .8;
+                font-size: 20px;
+                font-weight: bolder;
+            }
+
+            .node:hover {
+                opacity: 1;
+                stroke: #000;
+                stroke-width: 1px;
+            }
+            
+            .link {
+                stroke: #fff;
+                stroke-dasharray: 10,10;
+                stroke-opacity: .6;
+            }
+        </style>
+    </head>
     <body>
-        meh.
+        <script type="text/javascript">
+            var width = screen.width-100;
+                height = screen.height-200,
+                imgWidth = 95,
+                imgHeight = 115;
+
+            var force = d3.layout.force()
+                .distance(400)
+                .linkDistance(350)
+                .charge(-100)
+                .size([width, height]);
+
+            var svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            d3.json("data.json", function(error, graph) {
+                force.nodes(graph.nodes)
+                     .links(graph.links)
+                     .start();
+
+                var link = svg.selectAll(".link")
+                    .data(graph.links)
+                    .enter().append("line")
+                        .attr("class", "link")
+                        .style("stroke-width", function(d) { 
+                            return Math.sqrt(d.value); });
+
+                var node = svg.selectAll(".node")
+                    .data(graph.nodes)
+                    .enter().append("g")
+                        .attr("class", "node")
+                        .call(force.drag);
+
+                node.append("text")
+                    .attr("class", "text")
+                    .attr("dx", "-" + (imgWidth/2.0) + "px")
+                    .attr("dy", (imgHeight/2.0 + 10) + "px")
+                    .text(function(d) { return d.name; });
+
+                node.append("image")
+                    .attr("xlink:href", function(d) {return d.imageLink;})
+                    .attr("x", "-" + (imgWidth/2.0)  + "px")
+                    .attr("y", "-" + (imgHeight/2.0) + "px")
+                    .attr("width", imgWidth + "px")
+                    .attr("height", imgHeight + "px")
+                    .on("click", function(d) {window.location = d.url;});
+
+                force.on("tick", function() {
+                    link.attr("x1", function(d) { return d.source.x; })
+                        .attr("y1", function(d) { return d.source.y; })
+                        .attr("x2", function(d) { return d.target.x; })
+                        .attr("y2", function(d) { return d.target.y; });
+
+                node.attr("cx", function(d) { return d.x; })
+                    .attr("cy", function(d) { return d.y; });
+                    
+                node.attr("transform", function(d) {
+                    return "translate(" + d.x + "," + d.y + ")"; });
+                });
+            });
+        </script>
     </body>
 </html> 
