@@ -7,6 +7,7 @@
         <style media="screen" type="text/css">
             body {
                 background-color: #0ad;
+                overflow: hidden;
             }
 
             .node {
@@ -30,8 +31,8 @@
     </head>
     <body>
         <script type="text/javascript">
-            var width = screen.width-100;
-                height = screen.height-200,
+            var width = window.innerWidth,
+                height = window.innerHeight,
                 imgWidth = 95,
                 imgHeight = 115;
 
@@ -85,7 +86,7 @@
 
                 node.attr("cx", function(d) { return d.x; })
                     .attr("cy", function(d) { return d.y; });
-                    
+                 
                 node.attr("transform", function(d) {
                     return "translate(" + d.x + "," + d.y + ")"; });
                 });
