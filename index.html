@@ -3,94 +3,14 @@
     <head>
         <meta charset="utf-8">
         <title>Guglielmo Fachini</title>
-        <script type="text/javascript" src="d3.min.js"></script>
-        <style media="screen" type="text/css">
-            body {
-                background-color: #0ad;
-                overflow: hidden;
-            }
-
-            .node {
-                opacity: .8;
-                font-size: 20px;
-                font-weight: bolder;
-            }
-
-            .node:hover {
-                opacity: 1;
-                fill: #fff;
-                cursor: pointer;
-            }
-
-            .link {
-                stroke: #fff;
-                stroke-opacity: .6;
-                stroke-dasharray: 10,10;
-            }
-        </style>
     </head>
     <body>
-        <script type="text/javascript">
-            var width = window.innerWidth,
-                height = window.innerHeight,
-                imgWidth = 95,
-                imgHeight = 115;
-
-            var force = d3.layout.force()
-                .distance(400)
-                .linkDistance(350)
-                .charge(-100)
-                .size([width, height]);
-
-            var svg = d3.select("body").append("svg")
-                .attr("width", width)
-                .attr("height", height);
-
-            d3.json("data.json", function(error, graph) {
-                force.nodes(graph.nodes)
-                     .links(graph.links)
-                     .start();
-
-                var link = svg.selectAll(".link")
-                    .data(graph.links)
-                    .enter().append("line")
-                        .attr("class", "link")
-                        .style("stroke-width", function(d) { 
-                            return Math.sqrt(d.value); });
-
-                var node = svg.selectAll(".node")
-                    .data(graph.nodes)
-                    .enter().append("g")
-                        .attr("class", "node")
-                        .call(force.drag);
-
-                node.append("text")
-                    .attr("class", "text")
-                    .attr("dx", "-" + (imgWidth/2.0) + "px")
-                    .attr("dy", (imgHeight/2.0 + 10) + "px")
-                    .text(function(d) { return d.name; });
-
-                node.append("image")
-                    .attr("xlink:href", function(d) {return d.imageLink;})
-                    .attr("x", "-" + (imgWidth/2.0)  + "px")
-                    .attr("y", "-" + (imgHeight/2.0) + "px")
-                    .attr("width", imgWidth + "px")
-                    .attr("height", imgHeight + "px")
-                    .on("click", function(d) {window.location = d.url;});
-
-                force.on("tick", function() {
-                    link.attr("x1", function(d) { return d.source.x; })
-                        .attr("y1", function(d) { return d.source.y; })
-                        .attr("x2", function(d) { return d.target.x; })
-                        .attr("y2", function(d) { return d.target.y; });
-
-                node.attr("cx", function(d) { return d.x; })
-                    .attr("cy", function(d) { return d.y; });
-                 
-                node.attr("transform", function(d) {
-                    return "translate(" + d.x + "," + d.y + ")"; });
-                });
-            });
-        </script>
+      Hi, I'm Guglielmo Fachini.
+      <br/>
+      You can find me on:
+      <a href="http://linkedin.com/pub/guglielmo-fachini/58/149/b00">Linkedin</a>,
+      <a href="http://www.github.com/guglielmos">Github</a>.
+      <br/>
+      If you want to contact me, write an email to <a href="mailto:{put my name here}@fachini.net">{put my name here}@fachini.net</a>
     </body>
 </html> 
